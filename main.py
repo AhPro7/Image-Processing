@@ -8,7 +8,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 
-new_img = image_rotation(img,-20)
+new_img = thresholding(img,127)
 cv2.imshow('gray scale',new_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()

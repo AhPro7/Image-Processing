@@ -32,12 +32,6 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage import exposure
-# from skimage import data
-# from skimage import img_as_float
-# from skimage import io
-# from skimage import transform
-# from skimage import util
-# from skimage import color
 import os
 
 
