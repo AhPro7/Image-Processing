@@ -7,8 +7,7 @@ cv2.imshow('image',img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
-
-new_img = thresholding(img,127)
+new_img = gray_scale(img)
 cv2.imshow('gray scale',new_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
