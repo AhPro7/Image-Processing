@@ -257,7 +257,7 @@ while True:
         image_path = ".tmp/resize.png"
         tools["image"].update(image_path)
 
-    if event == "translation":
+    if event == "Translation":
         print("translation")
         val = values["value"]
         val = val.split(",")
@@ -274,7 +274,7 @@ while True:
 
         img = cv2.imread(image_path)
         try:
-            img = image_translation(img, *val)
+            img = translation(img, *val)
         except Exception as e:
             print(e)
             sg.popup("please enter a valid number.")
