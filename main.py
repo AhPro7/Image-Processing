@@ -8,7 +8,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 
-new_img = image_to_sketch(img,3)
+new_img = dilation(img,0)
 
 cv2.imshow('gray scale',new_img)
 cv2.waitKey(0)

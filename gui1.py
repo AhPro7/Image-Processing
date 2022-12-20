@@ -246,7 +246,17 @@ def ImageSegmentation(img, value):
     lbl1.image = new_img
     # return
 
-
+def Dilation(img, value):
+    img = cv2.imread(path)
+    new_img = dilation(img,int(value))
+    cv2.imwrite(".tmp/tmpImg.png", new_img)
+    image_path = ".tmp/tmpImg.png"
+    new_img = Image.open(image_path)
+    new_img = new_img.resize((450, 500), Image.ANTIALIAS)
+    new_img = ImageTk.PhotoImage(new_img)
+    lbl1.configure(image=new_img)
+    lbl1.image = new_img
+    # return
 
 path = filedialog.askopenfilename(title="Select Image File",
                                   filetypes=(('PNG file', "*.png"),
@@ -430,8 +440,8 @@ btn11 = Button(frm1,
               height=2,
               border= 6,
               font=("sans-serif", 9),
-              background='#276BC8',
-              activebackground='#001230',
+              background='#000000',
+              activebackground='#005EFF',
               fg='white',
               activeforeground='white',
               command=lambda: Save())
@@ -451,5 +461,19 @@ btn13 = Button(frm1,
                 command=lambda: ImageSegmentation(path, T.get()))
 
 btn13.place(x=10,y=460)
+#new button for dilation ==> Ahmed Haytham
 
+btn14 = Button(frm1,
+                text="Dilation",
+                width=21,
+                height=2,
+                border= 6,
+                font=("sans-serif", 9),
+                background='#276BC8',
+                activebackground='#001230',
+                fg='white',
+                activeforeground='white',
+                command=lambda: Dilation(path, T.get()))
+
+btn14.place(x=190,y=460)
 frm1.mainloop()
