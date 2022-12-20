@@ -32,7 +32,15 @@ while True:
         img = cv2.imread(image_path)
 
         if img.shape[0] > 500 or img.shape[1] > 500:
-            img = cv2.resize(img, (500, img.shape[1] * 500 // img.shape[0]))
+            if img.shape[0] > img.shape[1]:
+                x = int((500/img.shape[0]) * img.shape[1])
+                img = cv2.resize(img, (x, 500))
+            else:   
+                x = int((500/img.shape[1]) * img.shape[0])
+                img = cv2.resize(img, (500, x))
+
+        # w, h
+        # 500, x
 
         cv2.imwrite(".tmp/og.png", img)
 
