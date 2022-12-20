@@ -104,8 +104,12 @@ def Cropping(path, value):
     else:
         img = cv2.imread(path)
         try:
-            value = int(value)
-            new_img = image_cropping(img, value)
+            value = value.split(",")
+            x = int(value[0])
+            y = int(value[1])
+            w = int(value[2])
+            h = int(value[3])
+            new_img = image_cropping(img, x, y, w, h)
         except:
             messagebox.showinfo("Error", "Please enter a valid number.")
             return
@@ -227,6 +231,21 @@ def Save():
     else:
         messagebox.showinfo("Error", "Image not saved.")
         return
+
+
+# image segmentation
+def ImageSegmentation(img, value):
+    img = cv2.imread(path)
+    new_img = image_segmentation(img,int(value))
+    cv2.imwrite(".tmp/tmpImg.png", new_img)
+    image_path = ".tmp/tmpImg.png"
+    new_img = Image.open(image_path)
+    new_img = new_img.resize((450, 500), Image.ANTIALIAS)
+    new_img = ImageTk.PhotoImage(new_img)
+    lbl1.configure(image=new_img)
+    lbl1.image = new_img
+    # return
+
 
 
 path = filedialog.askopenfilename(title="Select Image File",
@@ -417,5 +436,20 @@ btn11 = Button(frm1,
               activeforeground='white',
               command=lambda: Save())
 btn11.place(x=190,y=400)
+
+# new button for image segmentation by k-means clustering ==> Ahmed Haytham
+btn13 = Button(frm1,
+                text="Image Segmentation",
+                width=21,
+                height=2,
+                border= 6,
+                font=("sans-serif", 9),
+                background='#276BC8',
+                activebackground='#001230',
+                fg='white',
+                activeforeground='white',
+                command=lambda: ImageSegmentation(path, T.get()))
+
+btn13.place(x=10,y=460)
 
 frm1.mainloop()
