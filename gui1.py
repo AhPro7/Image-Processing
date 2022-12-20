@@ -98,18 +98,15 @@ def BrightnessEnhancement(path, value):
         lbl1.image = new_img
 
 def Cropping(path, value):
-    if not value:
+    value = value.split(",")
+    if len(value) != 4:
         messagebox.showinfo("Error", "Please enter a valid number.")
         return
     else:
         img = cv2.imread(path)
         try:
-            value = value.split(",")
-            x = int(value[0])
-            y = int(value[1])
-            w = int(value[2])
-            h = int(value[3])
-            new_img = image_cropping(img, x, y, w, h)
+            value = int(value)
+            new_img = image_cropping(img, value)
         except:
             messagebox.showinfo("Error", "Please enter a valid number.")
             return
