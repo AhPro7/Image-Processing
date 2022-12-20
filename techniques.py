@@ -247,10 +247,20 @@ def compare(original_image, processed_image):
     :return: the difference between the two images
     """
     return cv2.subtract(original_image, processed_image)
-#_______________________________________________________________________________________________________________________
-#def convertToQtFormat(img):
-#    height, width, channel = img.shape
-#    bytesPerLine = 3 * width
-#    convertToQtFormat = QImage(img.data, width, height, bytesPerLine, QImage.Format_RGB888)
-#    p = convertToQtFormat.scaled(600, 400, Qt.KeepAspectRatio)
-#    return QPixmap.fromImage(p)
+
+#image_segmentation funcation using kmeans clustering algorithm
+def image_segmentation(image, number_of_clusters):
+    """
+    this function takes an image and a number of clusters as input and returns the segmented image
+    :param image: the input image
+    :param number_of_clusters: the number of clusters ex: 3
+    :return: the segmented image
+    """
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image = image.reshape((image.shape[0] * image.shape[1], 3))
+    clt = KMeans(n_clusters=number_of_clusters)
+    labels = clt.fit_predict(image)
+    quant = clt.cluster_centers_.astype("uint8")[labels]
+    quant = quant.reshape((image.shape[0], image.shape[1], 3))
+    image = image.reshape((image.shape[0], image.shape[1], 3))
+    return quant
