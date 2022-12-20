@@ -9,6 +9,10 @@ layout = [[sg.Text("Select an image to view it.")],
 
 image_selection_window = sg.Window("Select Image", layout, margins=(10, 10))
 
+# for storing temporary files
+if not '.tmp' in os.listdir():
+    os.mkdir('.tmp')
+
 while True:
     event, values = image_selection_window.read()
     print(event, values)
@@ -18,35 +22,27 @@ while True:
 
     if event == "Browse":
         image_path = values["Browse"]
-        image_selection_window["image"].update(image_path)
-
-    if event == "OK":
-        image_path = values["Browse"]
 
         # check if the path is for an image
         if not image_path.endswith((".png", ".jpg", ".jpeg")):
             sg.popup("Please select an image file.")
             continue
+    
+        # convert to PNG
+        img = cv2.imread(image_path)
+        cv2.imwrite(".tmp/og.png", img)
 
+        image_path = ".tmp/og.png"
+
+        image_selection_window["image"].update(image_path)
+
+    if event == "OK":
         print(image_path)
         image_selection_window.close()
         break
 
-# for storing temporary files
-if not '.tmp' in os.listdir():
-    os.mkdir('.tmp')
 
 og_image_path = image_path
-# tools_layout = [
-#     [[
-#         [sg.Text("Value for the the selected technique"), sg.Input(key="value", default_text="0")],
-#         [sg.Button("Grayscale"), sg.Button("Blur"), sg.Button("Thresholding"), sg.Button("Edge Detection"), sg.Button("Contrast"), sg.Button("Brightness"), sg.Button("Image Cropping"), sg.Button("Image Enhancement"), sg.Button("Rotation"), sg.Button("Translation"), sg.Button("Scaling")],
-#         [sg.Button("Reset"), sg.Button("save")],
-#     ],
-#         sg.Image(image_path, key="image"),]
-# ]
-
-# layout with 2 columns
 tools_layout = [[
     sg.Column([
         [
