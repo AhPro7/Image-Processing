@@ -30,6 +30,10 @@ while True:
     
         # convert to PNG
         img = cv2.imread(image_path)
+
+        if img.shape[0] > 500 or img.shape[1] > 500:
+            img = cv2.resize(img, (500, img.shape[1] * 500 // img.shape[0]))
+
         cv2.imwrite(".tmp/og.png", img)
 
         image_path = ".tmp/og.png"
@@ -88,8 +92,11 @@ while True:
             sg.popup("please enter a positive odd number.")
             continue
 
+        
+
         cv2.imwrite(".tmp/blur.png", img)
         image_path = ".tmp/blur.png"
+
         tools["image"].update(image_path)
 
     if event == "Thresholding":
