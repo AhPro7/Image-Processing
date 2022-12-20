@@ -105,8 +105,11 @@ def Cropping(path, value):
     else:
         img = cv2.imread(path)
         try:
-            value = int(value)
-            new_img = image_cropping(img, value)
+            x = int(value[0])
+            y = int(value[0])
+            w = int(value[0])
+            h = int(value[0])
+            new_img = image_cropping(img, x=x,y=y,width=w,height=h)
         except:
             messagebox.showinfo("Error", "Please enter a valid number.")
             return
