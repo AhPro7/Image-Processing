@@ -232,11 +232,18 @@ def Save():
         messagebox.showinfo("Error", "Image not saved.")
         return
 
-
-# image segmentation
 def ImageSegmentation(img, value):
-    img = cv2.imread(path)
-    new_img = image_segmentation(img,int(value))
+    if not value:
+      messagebox.showinfo("Error", "Please enter a valid number.")
+      return
+    else:
+      img = cv2.imread(path)
+      try:
+        value = int(value)
+        new_img = image_segmentation(img, value)
+      except:
+        messagebox.showinfo("Error", "please enter a positive odd number.")
+        return
     cv2.imwrite(".tmp/tmpImg.png", new_img)
     image_path = ".tmp/tmpImg.png"
     new_img = Image.open(image_path)
@@ -244,11 +251,19 @@ def ImageSegmentation(img, value):
     new_img = ImageTk.PhotoImage(new_img)
     lbl1.configure(image=new_img)
     lbl1.image = new_img
-    # return
 
 def Dilation(img, value):
-    img = cv2.imread(path)
-    new_img = dilation(img,int(value))
+    if not value:
+      messagebox.showinfo("Error", "Please enter a valid number.")
+      return
+    else:
+      img = cv2.imread(path)
+      try:
+        value = int(value)
+        new_img = dilation(img, value)
+      except:
+        messagebox.showinfo("Error", "please enter a positive odd number.")
+        return
     cv2.imwrite(".tmp/tmpImg.png", new_img)
     image_path = ".tmp/tmpImg.png"
     new_img = Image.open(image_path)
@@ -256,10 +271,19 @@ def Dilation(img, value):
     new_img = ImageTk.PhotoImage(new_img)
     lbl1.configure(image=new_img)
     lbl1.image = new_img
-    # return
+
 def Erosion(img, value):
-    img = cv2.imread(path)
-    new_img = erosion(img,int(value))
+    if not value:
+      messagebox.showinfo("Error", "Please enter a valid number.")
+      return
+    else:
+      img = cv2.imread(path)
+      try:
+        value = int(value)
+        new_img = erosion(img, value)
+      except:
+        messagebox.showinfo("Error", "please enter a positive odd number.")
+        return
     cv2.imwrite(".tmp/tmpImg.png", new_img)
     image_path = ".tmp/tmpImg.png"
     new_img = Image.open(image_path)
@@ -267,7 +291,7 @@ def Erosion(img, value):
     new_img = ImageTk.PhotoImage(new_img)
     lbl1.configure(image=new_img)
     lbl1.image = new_img
-    # return
+
 
 path = filedialog.askopenfilename(title="Select Image File",
                                   filetypes=(('PNG file', "*.png"),
@@ -277,7 +301,7 @@ cv2.imwrite(".tmp/tmpImg.png", cv2.imread(path))
 
 frm1 = Tk()
 frm1.title("Select An Image")
-frm1.minsize(400, 400)
+frm1.minsize(600, 600)
 frm1.config(background="#3D547B")
 
 lbl1 = Label(frm1, border=15, background="#3D547B")
@@ -432,33 +456,6 @@ btn9 = Button(frm1,
               command=lambda: Translation(path, T.get()))
 btn9.place(x=190,y=340)
 
-btn10 = Button(frm1,
-              text="Reset",
-              width=21,
-              height=2,
-              border= 6,
-              font=("sans-serif", 9),
-              background='#276BC8',
-              activebackground='#001230',
-              fg='white',
-              activeforeground='white',
-              command=lambda: Reset(path))
-btn10.place(x=10,y=400)
-
-btn11 = Button(frm1,
-              text="Save",
-              width=21,
-              height=2,
-              border= 6,
-              font=("sans-serif", 9),
-              background='#000000',
-              activebackground='#005EFF',
-              fg='white',
-              activeforeground='white',
-              command=lambda: Save())
-btn11.place(x=190,y=400)
-
-# new button for image segmentation by k-means clustering ==> Ahmed Haytham
 btn13 = Button(frm1,
                 text="Image Segmentation",
                 width=21,
@@ -471,8 +468,7 @@ btn13 = Button(frm1,
                 activeforeground='white',
                 command=lambda: ImageSegmentation(path, T.get()))
 
-btn13.place(x=10,y=460)
-#new button for dilation ==> Ahmed Haytham
+btn13.place(x=10,y=400)
 
 btn14 = Button(frm1,
                 text="Dilation",
@@ -486,8 +482,7 @@ btn14 = Button(frm1,
                 activeforeground='white',
                 command=lambda: Dilation(path, T.get()))
 
-btn14.place(x=190,y=460)
-#new button for erosion with KS ==> Ahmed Haytham
+btn14.place(x=190,y=400)
 
 btn15 = Button(frm1,
                 text="Erosion",
@@ -501,6 +496,32 @@ btn15 = Button(frm1,
                 activeforeground='white',
                 command=lambda: Erosion(path, T.get()))
 
-btn15.place(x=10,y=520)
+btn15.place(x=10,y=460)
+
+btn10 = Button(frm1,
+              text="Reset",
+              width=21,
+              height=2,
+              border= 6,
+              font=("sans-serif", 9),
+              background='#001230',
+              activebackground='#276BC8',
+              fg='white',
+              activeforeground='white',
+              command=lambda: Reset(path))
+btn10.place(x=190,y=460)
+
+btn11 = Button(frm1,
+              text="Save",
+              width=47,
+              height=2,
+              border= 6,
+              font=("sans-serif", 9),
+              background='#001230',
+              activebackground='#276BC8',
+              fg='white',
+              activeforeground='white',
+              command=lambda: Save())
+btn11.place(x=10,y=520)
 
 frm1.mainloop()
