@@ -239,7 +239,7 @@ def ImageSegmentation(img, value):
         value = int(value)
         new_img = image_segmentation(img, value)
       except:
-        messagebox.showinfo("Error", "please enter a positive odd number.")
+        messagebox.showinfo("Error", "Please enter a valid number.")
         return
     cv2.imwrite(".tmp/tmpImg.png", new_img)
     image_path = ".tmp/tmpImg.png"
@@ -259,7 +259,7 @@ def Dilation(img, value):
         value = int(value)
         new_img = dilation(img, value)
       except:
-        messagebox.showinfo("Error", "please enter a positive odd number.")
+        messagebox.showinfo("Error", "Please enter a valid number.")
         return
     cv2.imwrite(".tmp/tmpImg.png", new_img)
     image_path = ".tmp/tmpImg.png"
@@ -279,7 +279,7 @@ def Erosion(img, value):
         value = int(value)
         new_img = erosion(img, value)
       except:
-        messagebox.showinfo("Error", "please enter a positive odd number.")
+        messagebox.showinfo("Error", "Please enter a valid number.")
         return
     cv2.imwrite(".tmp/tmpImg.png", new_img)
     image_path = ".tmp/tmpImg.png"
