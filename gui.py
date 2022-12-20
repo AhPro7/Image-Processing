@@ -54,7 +54,7 @@ tools_layout = [[
             sg.Input(key="value", default_text="0", size=10)
         ],
         [sg.Button("Grayscale"),sg.Button("Blur"), sg.Button("Thresholding"),sg.Button("Edge Detection")],
-        [sg.Button("Contrast Enhancement"), sg.Button("Brightness Enhancement"), sg.Button("Cropping"), sg.Button("Enhancement")],
+        [sg.Button("Brightness Enhancement"), sg.Button("Cropping"), sg.Button("Sketch")],
         [sg.Button("Rotation"), sg.Button("Translation"), sg.Button("Scale")],
         [sg.Button("Reset"), sg.Button("save")],
     ],scrollable=True, expand_y=True),
@@ -136,16 +136,6 @@ while True:
         image_path = ".tmp/edge_detection.png"
         tools["image"].update(image_path)
 
-    if event == "Contrast Enhancement":
-        print("contrast")
-
-        img = cv2.imread(image_path)
-        img = contrast_enhancement(img)
-
-        cv2.imwrite(".tmp/contrast.png", img)
-        image_path = ".tmp/contrast.png"
-        tools["image"].update(image_path)
-
     if event == "Brightness Enhancement":
         print("brightness")
 
@@ -190,15 +180,27 @@ while True:
         tools["image"].update(image_path)
 
         
-    if event == "Enhancement":
-        print("enhancement")
+    if event == "Sketch":
+        print("Sketch")
+
+        val = values["value"]
+        if not val.isdigit():
+            sg.popup("Please enter a valid number.")
+            continue
+
+        val = int(val)
 
         img = cv2.imread(image_path)
 
-        img = image_enhancement(img)
+        try:
+            img = image_to_sketch(img, val)
+        except Exception as e:
+            print(e)
+            sg.popup("please enter a valid number.")
+            continue
 
-        cv2.imwrite(".tmp/enhancement.png", img)
-        image_path = ".tmp/enhancement.png"
+        cv2.imwrite(".tmp/sketch.png", img)
+        image_path = ".tmp/sketch.png"
         tools["image"].update(image_path)
 
     if event == "Rotation":
