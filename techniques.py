@@ -190,15 +190,19 @@ def image_cropping(image, x, y, width, height):
     """
     return image[y:y + height, x:x + width]
 
-# image_enhancement function
-def image_enhancement(image):
+# image to sketch function
+def image_to_sketch(image, kernel_size):
     """
-    this function takes an image as input and returns the enhanced image
+    this function takes an image and a kernel size as input and returns the sketch of the image
     :param image: the input image
-    :return: the enhanced image
+    :param kernel_size: the kernel size ex: 3
+    :return: the sketch of the image
     """
-    return cv2.xphoto.createAutoWhiteBalance().balanceWhite(image)
-
+    image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    image_gray_blur = cv2.GaussianBlur(image_gray, (kernel_size, kernel_size), 0)
+    canny_edges = cv2.Canny(image_gray_blur, 10, 70)
+    ret, mask = cv2.threshold(canny_edges, 70, 255, cv2.THRESH_BINARY_INV)
+    return mask
 # image_rotation function
 def image_rotation(image, angle):
     """
@@ -248,19 +252,18 @@ def compare(original_image, processed_image):
     """
     return cv2.subtract(original_image, processed_image)
 
-#image_segmentation funcation using kmeans clustering algorithm
-def image_segmentation(image, number_of_clusters):
+# image_segmentation function using opencv K-means algorithm
+def image_segmentation(image, k):
     """
-    this function takes an image and a number of clusters as input and returns the segmented image
+    this function takes an image and a k value as input and returns the segmented image
     :param image: the input image
-    :param number_of_clusters: the number of clusters ex: 3
+    :param k: the k value ex: 3
     :return: the segmented image
     """
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = image.reshape((image.shape[0] * image.shape[1], 3))
-    clt = KMeans(n_clusters=number_of_clusters)
-    labels = clt.fit_predict(image)
-    quant = clt.cluster_centers_.astype("uint8")[labels]
-    quant = quant.reshape((image.shape[0], image.shape[1], 3))
-    image = image.reshape((image.shape[0], image.shape[1], 3))
-    return quant
+    Z = image.reshape((-1, 3))
+    Z = np.float32(Z)
+    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
+    ret, label, center = cv2.kmeans(Z, k, None, criteria, 10, cv2.KMEANS_RANDOM_CENTERS)
+    center = np.uint8(center)
+    res = center[label.flatten()]
+    return res.reshape((image.shape))
