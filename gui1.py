@@ -166,6 +166,14 @@ def Scale(path, value):
     else:
         try:
             value = [float(i) for i in value]
+            for i in value:
+                if i > 2:
+                    messagebox.showinfo("Error","Max scale is 2.")
+                    return
+
+                if i < 0:
+                    messagebox.showinfo("Error","Min scale is 0.")
+                    return
         except:
             messagebox.showinfo("Error", "Please enter a valid number.")
             return

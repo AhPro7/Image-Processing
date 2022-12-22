@@ -8,7 +8,7 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 
-new_img = erosion(img,5)
+new_img = translation(img,100,100)
 
 cv2.imshow('gray scale',new_img)
 cv2.waitKey(0)
