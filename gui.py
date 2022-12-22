@@ -32,7 +32,12 @@ while True:
         img = cv2.imread(image_path)
 
         if img.shape[0] > 500 or img.shape[1] > 500:
-            img = cv2.resize(img, (500, img.shape[1] * 500 // img.shape[0]))
+            if img.shape[0] > img.shape[1]:
+                x = int((500/img.shape[0]) * img.shape[1])
+                img = cv2.resize(img, (x, 500))
+            else:   
+                x = int((500/img.shape[1]) * img.shape[0])
+                img = cv2.resize(img, (500, x))
 
         cv2.imwrite(".tmp/og.png", img)
 
@@ -56,6 +61,7 @@ tools_layout = [[
         [sg.Button("Grayscale"),sg.Button("Blur"), sg.Button("Thresholding"),sg.Button("Edge Detection")],
         [sg.Button("Brightness Enhancement"), sg.Button("Cropping"), sg.Button("Sketch")],
         [sg.Button("Rotation"), sg.Button("Translation"), sg.Button("Scale")],
+        [sg.Button("Segmentation"), sg.Button("Dilation"), sg.Button("Erosion")],
         [sg.Button("Reset"), sg.Button("save")],
     ],scrollable=True, expand_y=True),
     sg.Column([[sg.Image(image_path, key="image")]]),
@@ -287,6 +293,67 @@ while True:
 
         cv2.imwrite(".tmp/translation.png", img)
         image_path = ".tmp/translation.png"
+        tools["image"].update(image_path)
+
+    if event == "Segmentation":
+        print("segmentation")
+        val = values["value"]
+        if not val.isdigit():
+            sg.popup("Please enter a valid number.")
+            continue
+        val = int(val)
+
+        img = cv2.imread(image_path)
+        try:
+            img = image_segmentation(img, val)
+        except Exception as e:
+            print(e)
+            sg.popup("please enter a valid number.")
+            continue
+
+        cv2.imwrite(".tmp/segmentation.png", img)
+        image_path = ".tmp/segmentation.png"
+        tools["image"].update(image_path)
+
+
+    if event == "Dilation":
+        print("dilation")
+        val = values["value"]
+        if not val.isdigit():
+            sg.popup("Please enter a valid number.")
+            continue
+        val = int(val)
+
+        img = cv2.imread(image_path)
+        try:
+            img = dilation(img, val)
+        except Exception as e:
+            print(e)
+            sg.popup("please enter a valid number.")
+            continue
+
+        cv2.imwrite(".tmp/dilation.png", img)
+        image_path = ".tmp/dilation.png"
+        tools["image"].update(image_path)
+
+    if event == "Erosion":
+        print("erosion")
+        val = values["value"]
+        if not val.isdigit():
+            sg.popup("Please enter a valid number.")
+            continue
+        val = int(val)
+
+        img = cv2.imread(image_path)
+        try:
+            img = erosion(img, val)
+        except Exception as e:
+            print(e)
+            sg.popup("please enter a valid number.")
+            continue
+
+        cv2.imwrite(".tmp/erosion.png", img)
+        image_path = ".tmp/erosion.png"
         tools["image"].update(image_path)
 
 
